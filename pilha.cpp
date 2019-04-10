@@ -58,7 +58,7 @@ void inserir(struct pilha *pt, char x)
 	pt->items[++pt->top] = x;
 }
 
-int topo(struct pilha *pt)
+char topo(struct pilha *pt)
 {
 	if(!estaVazio(pt))
 		return pt->items[pt->top];
@@ -66,7 +66,7 @@ int topo(struct pilha *pt)
 		exit(EXIT_FAILURE);
 }
 
-int remover(struct pilha *pt)
+char remover(struct pilha *pt)
 {
 	if(estaVazio(pt))
 		exit(EXIT_FAILURE);
@@ -74,19 +74,53 @@ int remover(struct pilha *pt)
 	return pt->items[pt->top--];
 }
 
+int charToInt(char x)
+{
+	return ((int) x) - 48; 	
+}
+
+struct pilha* notacaoPolonesa(char *c, struct pilha *ptNum, struct pilha *ptNotNum)
+{
+	int  i = 0;
+	while(*(c + i))
+	{
+		if(isdigit(*(c + i))) 
+		{
+			inserir(ptNum, *(c + i));
+		}
+		else
+		{
+			if(*(c + i) == ')')
+			{
+				while(true)
+				{	
+					char aux = remover(ptNotNum);
+					if(aux != 40)
+						inserir(ptNum, aux);
+					else
+						break;
+				}
+			}
+			else
+			{
+				inserir(ptNotNum, *(c + i));
+			}
+		}
+
+		i++;
+	}
+
+	return ptNum;
+}
+
 int main(int argc, char *argv[])
 {
 	struct pilha *ptNum = novaPilha(50);
 	struct pilha *ptNotNum = novaPilha(25);
-	char c;
-
-	while(scanf("%c", &c) == 1)
-	{
-		if(isdigit(c))
-			inserir(ptNum, c);
-		else
-			inserir(ptNotNum, c);
-	}
+	char *c = (char*) malloc(sizeof(char) * 500);
+	
+	scanf("%s", c);
+	ptNum = notacaoPolonesa(c, ptNum, ptNotNum);
 
 	/* inserir(pt, 'a');
 	inserir(pt, 'z');
