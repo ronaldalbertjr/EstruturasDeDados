@@ -96,14 +96,16 @@ void adicionarElementos(node **n, int x)
 
 	int balanceamento = diferencaAlturas(*n);
 
-	if (balanceamento > 1 && x < (*n)->esq->valor)  
+	if (balanceamento > 1 && x < (*n)->esq->valor)
+	{  
         rotacaoDireita(n);
         return ;  
-    
-    if (balanceamento < -1 && x > (*n)->dir->valor)  
+    }
+    if (balanceamento < -1 && x > (*n)->dir->valor)
+    {  
         rotacaoEsquerda(n);
         return ;  
-    
+    }
     if (balanceamento > 1 && x > (*n)->esq->valor)  
     {  
     	duplaRotacaoDireita(n);
@@ -130,15 +132,12 @@ void preordem(node *node)
 int main(int argc, char const *argv[])
 {
 	node *n = criarNode();
-	adicionarElementos(&n, 12);
-	adicionarElementos(&n, 20);
-	adicionarElementos(&n, 27);
-	//adicionarElementos(&n, 35);
-	//adicionarElementos(&n, 32);
-	//adicionarElementos(&n, 50);
-	//adicionarElementos(&n, 1);
-	//adicionarElementos(&n, 4);
-	//adicionarElementos(&n, 10);
+	int valor;
+	while(!feof(stdin))
+	{
+		if(scanf("%d", &valor) == 1)
+			adicionarElementos(&n, valor);
+	}
 	preordem(n);
 	return 0;
 }
